@@ -102,6 +102,7 @@ public class Wallet {
     private double combinedMean(double mean1, double n1, double mean2, double n2) {
         return ((n1 * mean1) + (n2 * mean2)) / (n1+n2);
     }
+
     private double combinedVariance(double variance1, double n1, double mean1, double variance2, double n2, double mean2) {
         double xBar = combinedMean(mean1, n1, mean2, n2);
         double d1 = Math.pow(mean1 - xBar, 2);
@@ -114,7 +115,7 @@ public class Wallet {
         System.out.println();
         System.out.println("Gambling Edge %:");
         for (int i = 0; i < money.length; i++) {
-            System.out.println(names[i] + ": " + formatter.format(money[i] / transactions[i]));
+            System.out.println(names[i] + ": " + formatter.format(money[i] / (transactions[i]) * unit));
         }
     }
 
@@ -141,7 +142,7 @@ public class Wallet {
         System.out.println();
         System.out.printf("%-12s | %-9s | %-12s | %-12s\n", "Units per", "100", "Shoe", "Hour");
         for (int i = 0; i < money.length; i++) {
-            double unitsPer = (money[i] / totalTransactions);
+            double unitsPer = (money[i] / (totalTransactions * unit));
             String units = formatter.format(unitsPer * 100);
             String shoe = formatter.format(unitsPer * iterations);
             String hour = formatter.format(unitsPer * handsPerHour);
@@ -163,8 +164,8 @@ public class Wallet {
         double rate = 0;
         for (int i = money.length - 1; i > 2; i--) {
             rate += rates[i];
-            System.out.print("Team of " + (8-i) + ": " + formatter.format(unit * (rate + rates[2])) + "/hour | ");
-            System.out.println(formatter.format((rate + rates[2]) * unit * 2080) + "/Year");
+            System.out.print("Team of " + (8-i) + ": " + formatter.format(rate + rates[2]) + "/hour | ");
+            System.out.println(formatter.format((rate + rates[2]) * 2080) + "/Year");
         }
     }
 
@@ -206,9 +207,9 @@ public class Wallet {
         for (int i = money.length - 1; i > 2; i--) {
             variance = combinedVariance(variance, numTransactions, edge, rates[1][i], rates[0][i], rates[0][i]);
             edge = combinedMean(edge, numTransactions, rates[0][i], rates[2][i]);
-            System.out.print("Team of " + (8-i) + ": " + formatter.format(unit * (((variance / (2 * edge)) * Math.log(1/risk))*(8-i))));
-            System.out.print(" | " + formatter.format(unit * ((variance / (2 * edge)) * Math.log(1/risk))) + "/person");
-            System.out.println();
+            double r = Math.sqrt((edge*edge) + variance);
+            System.out.print("Team of " + (8-i) + ": " + formatter.format((r * (Math.log(risk)/Math.log(2/(1+(edge/r))-1)))/(8-i)) + "/person");
+            System.out.println(" | Team of " + (8-i) + ": " + formatter.format((r * (Math.log(risk)/Math.log(2/(1+(edge/r))-1)))));
         }
     }
 }

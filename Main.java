@@ -4,10 +4,10 @@ import java.util.concurrent.*;
 public class Main {
     public static void main (String args[]) throws Exception {
         String[] names = {"Player", "Banker", "Tie", "Fortune 7", "Golden 8", "Heavenly 9", "Blazing 7's", "Cover All"};
-        double unit = 25.00;
+        double unit = 100.00;
         int numDecks = 8;
         int cutCardDepth = 14;
-        long iterations = 100_000_000;
+        long iterations = 10_000_000;
         int threads = 12;
         int handsPerHour = 72;
         double risk = .01;

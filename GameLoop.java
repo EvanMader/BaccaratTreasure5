@@ -150,7 +150,7 @@ public class GameLoop implements Callable<Wallet> {
         double[] bets = {0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0};
         for (int i = 0; i < bets.length; i++) {
             if (shoe.count.counts[i] / shoe.decksRemanining >= shoe.count.triggers[i]) {
-                bets[i] = 1.0;
+                bets[i] = unit;
             } else {
                 bets[i] = 0.0;
             }
